@@ -57,6 +57,7 @@ public class MoneyGame : MonoBehaviour {
 
    void ButtonPress (KMSelectable Button) {
       GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Button.transform);
+      Button.AddInteractionPunch();
       if (ModuleSolved || Animating) {
          return;
       }
@@ -82,17 +83,17 @@ public class MoneyGame : MonoBehaviour {
    void Start () {
       Audio.PlaySoundAtTransform("StartNoise", transform);
       //Instantiates the lyrics and removes all duplicates.
-      Lyrics.Add(new List<string> { "She", "sells", "sea", "shells", "on", "the", "sea", "shore", "but", "the", "value", "of", "these", "shells", "will", "fall", "due", "to", "the", "laws", "of", "supply", "and", "demand", "No", "one", "wants", "to", "buy", "shells", "cus", "there\'s", "loads", "on", "the", "sand" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "You", "must", "create", "a", "sense", "of", "scarcity", "Shells", "will", "sell", "much", "better", "if", "the", "people", "think", "they\'re", "rare", "you", "see", "bare", "with", "me", "and", "take", "as", "many", "shells", "as", "you", "can", "find", "and", "hide", "\'em", "on", "an", "island", "stockpile", "\'em", "high", "until", "they\'re", "rarer", "than", "a", "diamond" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "You", "gotta", "make", "the", "people", "think", "that", "they", "want", "\'em", "Really", "want", "\'em", "Really", "fuckin", "want", "\'em", "Hit", "\'em", "like", "Bronson", "Influencers", "product", "placement", "featured", "prime", "time", "entertainment", "If", "you", "haven\'t", "got", "a", "shell", "then", "you\'re", "just", "a", "fucking", "waste", "man" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "It\'s", "Monopoly", "invest", "inside", "some", "property", "start", "a", "corporation", "make", "a", "logo", "do", "it", "properly", "These", "shells", "must", "sell", "that", "will", "be", "your", "new", "philosophy", "Swallow", "all", "your", "morals", "they\'re", "a", "poor", "man\'s", "quality" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "Expand", "Expand", "Expand", "Clear", "forest", "Make", "land", "Fresh", "blood", "On", "hands" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "Why", "just", "shells", "Why", "limit", "yourself", "She", "sells", "sea", "shells", "sell", "oil", "as", "well" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "Guns", "sell", "stocks", "sell", "diamonds", "sell", "rocks", "sell", "water", "to", "a", "fish", "sell", "the", "time", "to", "a", "clock" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "Press", "on", "the", "gas", "Take", "your", "foot", "off", "the", "brakes", "Then", "run", "to", "be", "the", "president", "of", "the", "United", "States" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "Big", "smile", "mate", "big", "wave", "that\'s", "great", "Now", "the", "truth", "is", "overrated", "tell", "lies", "out", "the", "gate" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "Polarize", "the", "people", "controversy", "is", "the", "game", "It", "don\'t", "matter", "if", "they", "hate", "you", "if", "they", "all", "say", "your", "name" }.Distinct().ToList());
-      Lyrics.Add(new List<string> { "The", "world", "is", "yours", "Step", "out", "on", "a", "stage", "to", "a", "round", "of", "applause", "You\'re", "a", "liar", "a", "cheat", "a", "devil", "a", "whore", "and", "you", "sell", "sea", "shells", "on", "the", "sea", "shore" }.Distinct().ToList());
+      Lyrics.Add(new List<string> { "She", "sells", "sea", "shells", "on", "the", "sea", "shore", "but", "the", "value", "of", "these", "shells", "will", "fall", "due", "to", "the", "laws", "of", "supply", "and", "demand", "No", "one", "wants", "to", "buy", "shells", "cus", "there\'s", "loads", "on", "the", "sand" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "You", "must", "create", "a", "sense", "of", "scarcity", "Shells", "will", "sell", "much", "better", "if", "the", "people", "think", "they\'re", "rare", "you", "see", "bare", "with", "me", "and", "take", "as", "many", "shells", "as", "you", "can", "find", "and", "hide", "\'em", "on", "an", "island", "stockpile", "\'em", "high", "until", "they\'re", "rarer", "than", "a", "diamond" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "You", "gotta", "make", "the", "people", "think", "that", "they", "want", "\'em", "Really", "want", "\'em", "Really", "fuckin", "want", "\'em", "Hit", "\'em", "like", "Bronson", "Influencers", "product", "placement", "featured", "prime", "time", "entertainment", "If", "you", "haven\'t", "got", "a", "shell", "then", "you\'re", "just", "a", "fucking", "waste", "man" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "It\'s", "Monopoly", "invest", "inside", "some", "property", "start", "a", "corporation", "make", "a", "logo", "do", "it", "properly", "These", "shells", "must", "sell", "that", "will", "be", "your", "new", "philosophy", "Swallow", "all", "your", "morals", "they\'re", "a", "poor", "man\'s", "quality" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "Expand", "Expand", "Expand", "Clear", "forest", "Make", "land", "Fresh", "blood", "On", "hands" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "Why", "just", "shells", "Why", "limit", "yourself", "She", "sells", "sea", "shells", "sell", "oil", "as", "well" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "Guns", "sell", "stocks", "sell", "diamonds", "sell", "rocks", "sell", "water", "to", "a", "fish", "sell", "the", "time", "to", "a", "clock" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "Press", "on", "the", "gas", "Take", "your", "foot", "off", "the", "brakes", "Then", "run", "to", "be", "the", "president", "of", "the", "United", "States" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "Big", "smile", "mate", "big", "wave", "that\'s", "great", "Now", "the", "truth", "is", "overrated", "tell", "lies", "out", "the", "gate" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "Polarize", "the", "people", "controversy", "is", "the", "game", "It", "don\'t", "matter", "if", "they", "hate", "you", "if", "they", "all", "say", "your", "name" }.Select(x => x.ToLower()).Distinct().ToList());
+      Lyrics.Add(new List<string> { "The", "world", "is", "yours", "Step", "out", "on", "a", "stage", "to", "a", "round", "of", "applause", "You\'re", "a", "liar", "a", "cheat", "a", "devil", "a", "whore", "and", "you", "sell", "sea", "shells", "on", "the", "sea", "shore" }.Select(x => x.ToLower()).Distinct().ToList());
       GenerateStage();
       StartCoroutine(NewStageAnimation(false));
    }
@@ -163,7 +164,7 @@ public class MoneyGame : MonoBehaviour {
       DisplayText.text = PhraseForDisplay;
       for (int i = 0; i < 5; i++) {
          ButtonText[i].text = Options[i];
-         if (i != 4 && (new string[] { "controversy", "corporation"}.Contains(ButtonText[i].text.ToLower()))) {
+         if (i != 4 && (new string[] { "controversy", "corporation", "influencers"}.Contains(ButtonText[i].text.ToLower()))) {
             ButtonText[i].fontSize = 144;
          }
          if (i != 4 && (new string[] { "entertainment" }.Contains(ButtonText[i].text.ToLower()))) {
