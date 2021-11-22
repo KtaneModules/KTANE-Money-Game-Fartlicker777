@@ -56,7 +56,7 @@ public class MoneyGame : MonoBehaviour {
    }
 
    void ButtonPress (KMSelectable Button) {
-      GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Button.transform);
+      Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Button.transform);
       Button.AddInteractionPunch();
       if (ModuleSolved || Animating) {
          return;
@@ -102,6 +102,7 @@ public class MoneyGame : MonoBehaviour {
       LEDs[Stage].GetComponent<MeshRenderer>().material = Lit;
       Stage++;
       if (Stage == 3) {
+         DisplayText.text = " ";
          GetComponent<KMBombModule>().HandlePass();
          ModuleSolved = true;
       }
@@ -160,8 +161,8 @@ public class MoneyGame : MonoBehaviour {
          yield return new WaitForSeconds(0.6f);
       }
 
-      yield return new WaitForSeconds(0.2f);
       DisplayText.text = PhraseForDisplay;
+      yield return new WaitForSeconds(0.2f);
       for (int i = 0; i < 5; i++) {
          ButtonText[i].text = Options[i];
          if (i != 4 && (new string[] { "controversy", "corporation", "influencers"}.Contains(ButtonText[i].text.ToLower()))) {
@@ -208,8 +209,7 @@ public class MoneyGame : MonoBehaviour {
             }
          }
          if (Counter == 5) {
-            Counter = 0;
-            yield return "sendtochaterror I don't understand";
+            yield return "sendtochaterror I don't understand!";
             yield break;
          }
       }
@@ -225,14 +225,19 @@ public class MoneyGame : MonoBehaviour {
 
    IEnumerator TwitchHandleForcedSolve () {
       while (!ModuleSolved) {
-         if (Animating) {
+         while (Animating) {
             yield return true;
          }
-         while (Iteration != AnswerOrder.Length) {
-            for (int i = 0; i < 5; i++) {
-               if (AnswerOrder[Iteration].ToString() == OrderToTheButtonOrder[i].ToString()) {
-                  Buttons[i].OnInteract();
-                  yield return new WaitForSeconds(.1f);
+         int start = Iteration;
+         for (int j = start; j < AnswerOrder.Length; j++)
+         {
+            for (int i = 0; i < 5; i++)
+            {
+               if (AnswerOrder[j].ToString() == OrderToTheButtonOrder[i].ToString())
+               {
+                   Buttons[i].OnInteract();
+                   yield return new WaitForSeconds(.1f);
+                   break;
                }
             }
          }
